@@ -52,9 +52,9 @@
 
                     <div class="form-group  m-t-20">
                       <div class="col-xs-12">
-                        <label for="email">Email Address</label>
-                        <input class="form-control" type="text" required="" name="email" placeholder="Username">
-                            @error('email')
+                        <label for="email">Username</label>
+                        <input class="form-control" type="text" required="" name="user_name" placeholder="Username">
+                            @error('user_name')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -96,7 +96,7 @@
                     {{-- signup --}}
                     <div class="form-group m-b-0">
                       <div class="col-sm-12 text-center">
-                        <p>Don't have an account? <a href="{{ route('register') }}" class="text-primary m-l-5"><b>Register</b></a></p>
+                        <p>Don't have an account? <a href="javascript:;" class="text-primary m-l-5"><b>Contact Admin</b></a></p>
                       </div>
                     </div>
                 </form>

@@ -17,4 +17,6 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('/profile/view/{id}', ['uses' => 'ProfileController@view','as' => 'profile.view']);
+
 Route::get('/home', 'HomeController@index')->name('home');

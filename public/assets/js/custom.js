@@ -78,9 +78,9 @@ $(document).ready(function () {
             url = window.location,
             element = $('ul.nav a').filter(function () {
                 return this.href === url || url.href.indexOf(this.href) === 0;
-            }).addClass('active').parent().parent().addClass('in').parent();
+            }).addClass('').parent().parent().addClass('in').parent();
         if (element.is('li')) {
-            element.addClass('active');
+            element.addClass('');
         }
         $(window).ready(set);
         $(window).bind("resize", set);
@@ -190,10 +190,10 @@ $(document).ready(function () {
     /* ===== Visited ul li ===== */
 
     $('.visited li a').on("click", function (e) {
-        $('.visited li').removeClass('active');
+        $('.visited li').removeClass('');
         var $parent = $(this).parent();
-        if (!$parent.hasClass('active')) {
-            $parent.addClass('active');
+        if (!$parent.hasClass('')) {
+            $parent.addClass('');
         }
         e.preventDefault();
     });

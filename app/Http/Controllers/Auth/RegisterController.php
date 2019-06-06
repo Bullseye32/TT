@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Symfony\Component\HttpFoundation\Request;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+
+use Illuminate\Auth\Events\Registered;
 
 class RegisterController extends Controller
 {
@@ -30,6 +33,27 @@ class RegisterController extends Controller
      */
     protected $redirectTo = '/home';
 
+    public function register(Request $request)
+    {
+
+        $this->validate($request,[
+            'full_name' => 'required|string|max:255',
+            'user_name' => 'required|string|max:100|unique:users',
+            'email' => 'string|email|max:255|unique:users',
+            'user_type' => 'required',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+        event(new Registered($user = $this->create($request->all() )));
+
+        // dd($request->all());
+
+        // $this->guard()->login($user);
+        return redirect()->route('login');
+
+    //     return $this->registered($request, $user)
+    //                     ?: redirect($this->redirectPath());
+    }
+
     /**
      * Create a new controller instance.
      *
@@ -37,7 +61,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('auth');
     }
 
     /**
@@ -46,15 +70,7 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
-    }
-
+   
     /**
      * Create a new user instance after a valid registration.
      *
@@ -64,7 +80,9 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'name' => $data['name'],
+            'full_name' => $data['full_name'],
+            'user_type' => $data['user_type'],
+            'user_name' => $data['user_name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
