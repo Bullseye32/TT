@@ -28,6 +28,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
+                                                {{ Auth::user() }}
                                                     {{-- @if ($count>0)
                                                     @foreach ($user->sortBy('status',0) as $task)
                                                         <tr class="odd gradeX">
@@ -37,7 +38,7 @@
                                                                     {{substr($task->name,0,50)}}
                                                                     </br>
                                                                     {{substr($task->name,50,strlen($task->name))}}
-                    
+
                                                                 @else
                                                                     {{$task->name}}
                                                                 @endif
@@ -84,7 +85,7 @@
                                                                     <span class="label label-danger">Urgent</span>
                                                                 @endif
                                                             </td>
-                    
+
                                                             <td onclick="trclick({{$task->id}})">
                                                                 @if(!empty($task->task_type))
                                                                     {{ucfirst($task->task_type)}}
@@ -99,11 +100,11 @@
                                                     @endforeach
                                                 @else
                                                     <div class="alert alert-warning" role="alert"><i class="fa fa-info-circle fa-fw"></i>No task has been assigned</div> --}}
-                                                {{-- @endif --}} --}}
+                                                {{-- @endif --}}
                                             </tbody>
                                         </table>
                                     </div>
-                                
+
                                 </div>
                             </div>
                         </div>

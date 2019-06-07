@@ -14,7 +14,7 @@
              </span> </a>
         </div>
         <!-- /Logo -->
-       
+
         <!-- This is the message dropdown -->
         <ul class="nav navbar-top-links navbar-right pull-right">
             <!-- /.Task dropdown -->
@@ -33,7 +33,7 @@
                         </div>
                     </li>
                     <li role="separator" class="divider"></li>
-                    <li><a href="#"><i class="ti-user"></i> My Profile</a></li>
+                    <li><a href="{{ route('profile.view', Auth::user()->id) }} "><i class="ti-user"></i> My Profile</a></li>
                     <li><a href="#"><i class="ti-email"></i> Inbox</a></li>
                     <li role="separator" class="divider"></li>
                     <li><a href="#"><i class="ti-settings"></i> Account Setting</a></li>
@@ -51,7 +51,7 @@
                 </ul>
                 <!-- /.dropdown-user -->
             </li>
-            
+
             <!-- /.dropdown -->
         </ul>
     </div>

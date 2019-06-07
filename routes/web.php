@@ -10,13 +10,22 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+if(!defined('STATIC_DIR')) define("STATIC_DIR","public/");
+if(!defined('DEFAULT_USER')) define('DEFAULT_USER','assets/uploads/icons/default-user-1.png');
 
-Route::get('/', function () {
-    return view('auth/login');
-});
+Route::get('/',['middleware' => 'auth', 'uses' => 'HomeController@index']);
+Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
 
-Route::get('/profile/view/{id}', ['uses' => 'ProfileController@view','as' => 'profile.view']);
+// staff Management
+Route::group(['prefix' => 'staff', 'as'=>'staff.'], function(){
+    Route::get('/list',['uses' => 'Auth\RegisterController@show', 'as' => 'show']);
+    Route::get('/register',['uses' => 'Auth\RegisterController@showRegistrationForm', 'as' => 'register']);
+    Route::get('/delete',['uses' => 'Auth\RegisterController@delete', 'as' => 'delete']);
+});
 
-Route::get('/home', 'HomeController@index')->name('home');
+// profile
+Route::get('/profile/view/{id}', ['uses' => 'ProfileController@view','as' => 'profile.view']);
+Route::get('/password/edit', ['uses' => 'ProfileController@editPassword','as' => 'password.edit']);
+Route::post('password/edit/{id}', ['uses' => 'ProfileController@updatePassword', 'as' => 'password.update']);

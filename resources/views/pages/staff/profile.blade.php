@@ -61,7 +61,7 @@ a.socialIcon:hover, .socialHoverClass {
 	margin:0;
 	line-height:50px;
 	text-align: center;
-	
+
 }
 
 .social-circle li a:hover i, .triggeredHover {
@@ -74,7 +74,7 @@ a.socialIcon:hover, .socialHoverClass {
 	-o-transition: all 0.2s;
 	-ms-transition: all 0.2s;
 	transition: all 0.2s;
-	
+
 }
 .social-circle i {
 	color: #fff;
@@ -83,7 +83,7 @@ a.socialIcon:hover, .socialHoverClass {
 	-o-transition: all 0.8s;
 	-ms-transition: all 0.8s;
 	transition: all 0.8s;
-	
+
 }
 
 
@@ -147,13 +147,13 @@ a.socialIcon:hover, .socialHoverClass {
 					<div class="panel panel-white post panel-shadow" >
 						<div class="panel-body">
 							<h1 class="panel-title pull-left" style="font-size:30px;">{{ $profile->full_name }}</h1>
-							<a class="btn btn-link btn-sm" href="#">Change password</a>
+							<a class="btn btn-link btn-sm" href="{{ route('password.edit') }} ">Change password</a>
 							<a class="btn btn-link btn-sm" href="#"> Edit profile</a>
 							<i class="fa fa-gear fa-fw"></i>
 							<br><br>
 							<strong><small>({{ $profile->user_name }})</small>  </strong>
 							<br><hr>
-							
+
 							<div class="col-md-12">
 								<ul class="social-network social-circle">
 									<li><a href="{{ $profile->facebook_link }}" target="_blank" class="icoFacebook" title="Facebook"><i class="fa fa-facebook"></i></a></li>
@@ -199,7 +199,7 @@ a.socialIcon:hover, .socialHoverClass {
 								</tbody>
 							</table>
 						</div>
-					
+
 					</div>
 				</div>
 			</div>
