@@ -3,7 +3,7 @@
         <!-- Toggle icon for mobile view -->
         <div class="top-left-part">
             <!-- Logo -->
-            <a class="logo" href="index.html">
+            <a class="logo" href="{{ route('home') }} ">
                 <!-- Logo icon image, you can use font-icon also --><b>
                 <!--This is dark logo icon--><img src="{{asset('assets/plugins/images/admin-logo.png') }} " alt="home" class="dark-logo" />
                 <!--This is light logo icon--><img src="{{asset('assets/plugins/images/admin-logo-dark.png') }} " alt="home" class="light-logo" />
@@ -29,7 +29,8 @@
                     <li>
                         <div class="dw-user-box">
                             <div class="u-img"><img src="{{ asset('assets/plugins/images/users/varun.jpg') }} " alt="user" /></div>
-                            <div class="u-text"><h4>Mukesh Rai</h4><p class="text-muted">Mukesh@gmail.com</p><a href="profile.html" class="btn btn-rounded btn-danger btn-sm">View Profile</a></div>
+                            <div class="u-text"><h4>Mukesh Rai</h4><p class="text-muted">Mukesh@gmail.com</p>
+                                <a href="{{ route('profile.view', Auth::user()->id) }} " class="btn btn-rounded btn-danger btn-sm">View Profile</a></div>
                         </div>
                     </li>
                     <li role="separator" class="divider"></li>

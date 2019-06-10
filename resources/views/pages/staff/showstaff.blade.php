@@ -26,6 +26,7 @@
                             @if(isset($staff))
                                 @foreach($staff as $val)
                                     <tr>
+                                        {{-- prof-image --}}
                                         <td>
                                             @if(!empty($val->profile_image))
                                                 <img src="{{ asset('assets/uploads/'. $val->profile_image) }}" alt="prof_img" height="50" width="50">
@@ -45,7 +46,7 @@
                                         </td>
 
                                         <td>{{ $val->user_name }}</td>
-
+                                        {{-- user_type --}}
                                         <td>
                                             @if($val->user_type == 'admin')
                                                 Admin
@@ -56,6 +57,7 @@
                                             @endif
                                         </td>
 
+                                        {{-- last-login --}}
                                         <td>
                                             @if(is_null($val->updated_at))
                                                 Not Logged In
@@ -67,28 +69,31 @@
 
                                         <td style="width: 20%;">
                                             {{-- {{ route('staff.view', $val->id) }} --}}
-                                            <a href="" class="table-link" title="View details">
+                                            <a href="{{ route('staff.view', $val->id) }} " class="table-link" title="View details">
                                         <span class="fa-stack">
                                             <i class="fa fa-square fa-stack-2x" ></i>
                                             <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
                                         </span>
                                             </a>
+
                                             {{-- {{route('staff.edit',$val->id)}} --}}
-                                            <a href="" class="table-link" title="Edit">
+                                            <a href="{{ route('staff.edit', $val->id) }} " class="table-link" title="Edit">
                                         <span class="fa-stack">
                                             <i class="fa fa-square fa-stack-2x"></i>
                                             <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                         </span>
                                             </a>
-                                            @if ($val->id == Auth::user()->id)
-                                            @else
-                                                <a  href="#deleteStaff" data-key="" class="table-link danger delete" title="Delete" data-ids="{{ $val->id }}" data-toggle="modal" data-rel="delete" data-user="{{$val->full_name}}">
+                                            {{-- clicking delete icon sends to #deleteStaff --}}
+                                            @if ($val->id !== Auth::user()->id)
+                                                <a  href="#deleteStaff" data-key="" class="table-link danger delete" title="Delete" data-toggle="modal" data-rel="delete"
+                                                data-id="{{ $val->id }}"
+                                                data-role="{{ $val->user_type }} "
+                                                data-user="{{$val->full_name}}">
                                                     <span class="fa-stack">
                                                         <i class="fa fa-square fa-stack-2x"></i>
                                                         <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
                                                     </span>
                                                 </a>
-
                                             @endif
                                         </td>
                                     </tr>
@@ -118,37 +123,40 @@
 
 @section('script')
     <script>
-        $('#deleteStaff').on('show.bs.modal', function (e) {
+        $('#deleteStaff').on('shown.bs.modal', function (e) {
+            // console.log(e)
             //e.preventDefault();
             var button = $(e.relatedTarget);
-            var ids = button.data('ids');
+            var id = button.data('id');
+            var role = button.data('role');
             var user = button.data('user');
 
             // Pass form reference to modal for submission on yes/ok
             var form = $(e.relatedTarget).closest('form');
             $(this).find('.modalfooter #confirm').data('form', form);
-            $("#hidden_id").val(ids);
-            $(".hidden_title").html(' "' + user + '" ');
+            $(".hidden_id").val(id);
+            $(".user_role").html('<strong>'+ role +'</strong>');
+            $(".hidden_title").html('"' + user + '"');
         });
 
 
         $('#deleteStaff').find('#confirm_yes').on('click', function () {
 
             //set csrf token
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
+            // $.ajaxSetup({
+            //     headers: {
+            //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            //     }
+            // });
 
-            //fetching id
-            var id = $("#hidden_id").val();
+            //fetching id from modal #deleteStaff
+            var id = $(".hidden_id").val();
 
             $.ajax({
                 type: "POST",
                 url: "{{route('staff.delete')  }}",
                 headers: {
-                    'XCSRFToken': $('meta[name="csrf-token"]').attr('content')
+                    'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content')
                 },
 
                 data: "id=" + id,
@@ -158,6 +166,7 @@
                     if(msg.error == false){
                         $("#deleteStaff").modal("hide");
                         $('#showMessage').find('.success').show();
+                        // finds class="success" in showMessage modal & shows msg
                         $("#showMessage").modal("show");
                     }
                     else

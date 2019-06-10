@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-if(!defined('STATIC_DIR')) define("STATIC_DIR","public/");
+if(!defined('STATIC_DIR')) define("STATIC_DIR","");
 if(!defined('DEFAULT_USER')) define('DEFAULT_USER','assets/uploads/icons/default-user-1.png');
 
 Route::get('/',['middleware' => 'auth', 'uses' => 'HomeController@index']);
@@ -22,7 +22,13 @@ Auth::routes();
 Route::group(['prefix' => 'staff', 'as'=>'staff.'], function(){
     Route::get('/list',['uses' => 'Auth\RegisterController@show', 'as' => 'show']);
     Route::get('/register',['uses' => 'Auth\RegisterController@showRegistrationForm', 'as' => 'register']);
-    Route::get('/delete',['uses' => 'Auth\RegisterController@delete', 'as' => 'delete']);
+
+    Route::get('/edit/{id}', ['uses' => 'Auth\RegisterController@getEdit', 'as' =>'edit'] );
+    Route::post('/edit/{id}', ['uses' => 'Auth\RegisterController@updateStaff'] );
+
+    Route::get('/view/{id}', ['uses' => 'Auth\RegisterController@getView', 'as' => 'view'] );
+
+    Route::post('/delete',['uses' => 'Auth\RegisterController@delete', 'as' => 'delete']);
 });
 
 // profile

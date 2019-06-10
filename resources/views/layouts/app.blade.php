@@ -26,6 +26,7 @@
             @include('partials._sidebar')
         <!-- Left navbar-header end -->
 
+
         <div id="page-wrapper">
                 <div class="container-fluid">
                     <div class="row bg-title">
