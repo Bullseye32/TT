@@ -86,11 +86,11 @@
 
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="#"><i class="glyphicon glyphicon-pencil fa-fw"></i> Create New Telephone</a>
+                            <a href="{{ route('telephone.register') }} "><i class="glyphicon glyphicon-pencil fa-fw"></i> Create New Telephone</a>
                         </li>
 
                         <li>
-                            <a href="javascript:;"><i class="	glyphicon glyphicon-earphone fa-fw"></i> Show Telephone List</a>
+                            <a href="{{ route('telephone.list') }} "><i class="	glyphicon glyphicon-earphone fa-fw"></i> Show Telephone List</a>
                         </li>
                     </ul>
                 </li>

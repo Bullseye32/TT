@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('css')
+{{-- css for social icons --}}
 <style>
-
     /* footer social icons */
     ul.social-network {
         list-style: none;
@@ -147,7 +147,7 @@
 						<div class="panel-body">
 							<h1 class="panel-title pull-left" style="font-size:30px;">{{ $profile->full_name }}</h1>
 							<a class="btn btn-link btn-sm" href="{{ route('password.edit') }} ">Change password</a>
-							<a class="btn btn-link btn-sm" href="#"> Edit profile</a>
+							<a class="btn btn-link btn-sm" href="{{ route('staff.edit', Auth::user()->id) }} "> Edit profile</a>
 							<i class="fa fa-gear fa-fw"></i>
 							<br><br>
 							<strong><small>({{ $profile->user_name }})</small>  </strong>

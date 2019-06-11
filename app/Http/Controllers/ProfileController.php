@@ -14,7 +14,13 @@ use Session;
 
 class ProfileController extends Controller
 {
-    public function view($id){
+    public function __construct()
+    {
+        $this -> middleware('auth');
+    }
+
+    public function view($id)
+    {
         // dd($id);
         $profile = User::find($id);
 

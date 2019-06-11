@@ -35,3 +35,12 @@ Route::group(['prefix' => 'staff', 'as'=>'staff.'], function(){
 Route::get('/profile/view/{id}', ['uses' => 'ProfileController@view','as' => 'profile.view']);
 Route::get('/password/edit', ['uses' => 'ProfileController@editPassword','as' => 'password.edit']);
 Route::post('password/edit/{id}', ['uses' => 'ProfileController@updatePassword', 'as' => 'password.update']);
+
+// Telephone management
+Route::group(['prefix' => 'telephone', 'as'=>'telephone.'], function(){
+    Route::get('/', ['uses' => 'TelephoneController@index', 'as' => 'list']);
+    Route::get('/register',['uses'=> 'TelephoneController@showRegister', 'as'=>'register']);
+    Route::post('/register',['uses' => 'TelephoneController@store', 'as' => 'register']);
+
+    Route::post('/delete',['uses' => 'TelephoneController@deleteTelephone', 'as' => 'delete_telephone']);
+});

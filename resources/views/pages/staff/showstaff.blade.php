@@ -17,6 +17,7 @@
                                     <th><span>Users</span></th>
                                     <th><span>Username</span></th>
                                     <th><span>User Type</span></th>
+                                    <th><span>Department</span></th>
                                     <th><span>Last Login</span></th>
                                     <th><span>Action</span></th>
                                 </tr>
@@ -48,13 +49,11 @@
                                         <td>{{ $val->user_name }}</td>
                                         {{-- user_type --}}
                                         <td>
-                                            @if($val->user_type == 'admin')
-                                                Admin
-                                               @elseif($val->user_type == 'account')
-                                                Account
-                                            @else
-                                                Staff
-                                            @endif
+                                            {{ $val->user_type }}
+                                        </td>
+                                        {{-- Department --}}
+                                        <td>
+                                        {{ $val->department }}
                                         </td>
 
                                         {{-- last-login --}}
