@@ -6,9 +6,13 @@ use App\User;
 use App\Telephone;
 use Illuminate\Http\Request;
 use Session;
+use Illuminate\Support\Facades\Validator;
 
 class TelephoneController extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,10 +20,12 @@ class TelephoneController extends Controller
      */
     public function index()
     {
-        $data = Telephone::all();
+        $data = Telephone::orderBy('id','desc')-> with('user_info')->get();
+        // $data= User::with('telephone')->get();
+
         // dd($data);
 
-        return view('pages.telephone.index') -> with('data', $data);
+        return view('pages.telephone.index')->with('data', $data);
     }
 
     /**
@@ -44,12 +50,9 @@ class TelephoneController extends Controller
     public function store(Request $request)
     {
         // dd($request->request);
-    $this->validate($request,[
-        'name' => 'required|max:50',
-        'department' => 'required|max:50',
-        'post' => 'required|max:50',
+        $this->validate($request,[
         'contact' => 'required|digits_between:5,12',
-            // 'ext_number' => 'required|max:5'
+        'user_id' => 'required|int',
 
         ]);
 
@@ -60,12 +63,12 @@ class TelephoneController extends Controller
 
         }
 
-
         $telephone = new Telephone();
-        $telephone->name = $request->name;
-        $telephone->department = $request->department;
 
-        $telephone->post = $request->post;
+        $telephone->user_id = $request->user_id;
+        // $telephone->department = $request->department;
+        // $telephone->post = $request->post;
+
         $telephone->contact = $request->contact;
 
         $telephone->ext_number = $request->ext_number;
@@ -96,7 +99,9 @@ class TelephoneController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = Telephone::where('id', $id)->orderBy('id','desc')->with('user_info')->first();
+        // dd($data);
+        return view("pages.telephone.edit_telephone")->with('data', $data);
     }
 
     /**
@@ -106,9 +111,24 @@ class TelephoneController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $this->validate($request,[
+            'contact' => 'required|digits_between:5,10',
+            'ext_number' => 'required|digits_between:3,5',
+        ]);
+        // dd($request);
+
+        $telephone = Telephone::find($request->telephone_id);
+
+        $telephone->contact = $request->contact;
+        $telephone->ext_number = $request->ext_number;
+        $telephone->created_at = date('Y-m-d H:i:s');
+
+        $telephone->save();
+
+        Session::flash('success', 'Telephone Directory updated Successfully');
+        return redirect()->route('telephone.list');
     }
 
     /**
@@ -117,8 +137,25 @@ class TelephoneController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'id'=> 'required',
+        ]);
+
+        if ($validator->fails()){
+            $responseData = Tools::setResponse('fail', 'Missing Parameter', '','');
+            $status = 422;
+
+            return response()->json($responseData, $status);
+        }
+
+        // deleting group permission also
+        $telephone = Telephone::where('id',$request->id)->first();
+        $telephone->delete();
+
+        // $responseData = Tools::setResponse('success', 'Telephone Deleted Successfully','','');
+        // return response($responseData,200);
+        return "success";
     }
 }

@@ -17,16 +17,16 @@
                     @csrf
                    <div class="col-md-12 form-group">
                         {{-- Name --}}
-                    <div class="col-md-6 form-group">
+                        <div class="col-md-6 form-group">
                             <label for="" class="control-label" >Name <span style="color: red;">*</span></label>
-                            <select class="form-control" name="name" id="name">
+                            <select class="form-control" name="user_id" id="name">
                                     <option value="" >-- SELECT ONE --</option>
                                     @if (!empty($staff))
 
 
                                         @foreach ($staff as $data)
                                         {{-- {{ (old('department') == 'Software') ? "selected" : '' }} --}}
-                                        <option value="{{ $data->full_name }}" @if(old('name') == $data->full_name) selected @endif> {{ $data->full_name }}
+                                        <option value="{{ $data->id }}" @if(old('user_id') == $data->id) selected @endif> {{ $data->full_name }}
                                         </option>
                                         @endforeach
 
@@ -36,7 +36,7 @@
                         </div>
 
                         {{-- Department --}}
-                        <div class="col-md-6 form-group">
+                        {{-- <div class="col-md-6 form-group">
                             <label for="" class="control-label">Department: <span style="color: red;">*</span></label>
                             <select name="department" class="form-control" id="exampleFormControlSelect1" required>
                                 <option disabled="">Select One Department</option>
@@ -53,10 +53,10 @@
                                      {{$errors->first('department')}}
                                 </span>
                             @endif
-                        </div>
+                        </div> --}}
 
                         {{-- post = user_type --}}
-                        <div class="col-md-6 form-group">
+                        {{-- <div class="col-md-6 form-group">
                             <label for="" class="control-label" >Post <span style="color: red;">*</span></label>
                             <input type="text" class="form-control" name="post"  placeholder="Enter Employee Post" required value="{{old('post')}}">
                             @if($errors->has('post'))
@@ -64,11 +64,12 @@
                                      {{$errors->first('post')}}
                                 </span>
                             @endif
-                        </div>
+                        </div> --}}
 
+                        {{-- contact --}}
                         <div class="col-md-6 form-group">
                             <label for=""  class="control-label">Contact Number <span style="color: red;">*</span></label>
-                            <input type="number" class="form-control" name="contact" min="0" placeholder="Enter Contact Number" required value="{{old('contact')}}">
+                            <input type="number" class="form-control" name="contact" placeholder="Enter Contact Number" value="{{old('contact')}}">
                             @if($errors->has('contact'))
                                 <span class="help-block" style="color:red;">
                                      {{$errors->first('contact')}}
@@ -76,6 +77,7 @@
                             @endif
                         </div>
 
+                        {{-- Extension --}}
                         <div class="col-md-6 form-group">
                             <label for="" class="control-label">Extension Number</label>
                             <input type="number" class="form-control" name="ext_number" min="0" placeholder="Enter Extension Number" value="{{old('ext_number')}}">

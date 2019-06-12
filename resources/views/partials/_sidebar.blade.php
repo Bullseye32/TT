@@ -82,15 +82,16 @@
 
                 {{-- telephone directory --}}
                 <li>
-                    <a href="#"><i class="glyphicon glyphicon-phone-alt fa-fw"></i> Telephone Directory<span class="fa arrow"></span></a>
+                    <a href="#" class="@if(Request::is('telephone/*')) active @endif ">
+                        <i class="glyphicon glyphicon-phone-alt fa-fw"></i> Telephone Directory<span class="fa arrow fa-fw"></span></a>
 
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="{{ route('telephone.register') }} "><i class="glyphicon glyphicon-pencil fa-fw"></i> Create New Telephone</a>
+                            <a href="{{ route('telephone.register') }} " class="@if(Request::is('telephone/register')) active @endif" ><i class="fa fa-plus fa-fw"></i> Add New Contact</a>
                         </li>
 
                         <li>
-                            <a href="{{ route('telephone.list') }} "><i class="	glyphicon glyphicon-earphone fa-fw"></i> Show Telephone List</a>
+                            <a href="{{ route('telephone.list') }} " class="@if(Request::is('telephone/list')) active @endif "><i class="	glyphicon glyphicon-earphone fa-fw"></i> Show Telephone List</a>
                         </li>
                     </ul>
                 </li>

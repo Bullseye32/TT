@@ -10,10 +10,11 @@
                 </div>
 
                 <div class="modal-body">
+                    {{-- error --}}
                     <div class="error" style="display: none;">
                         <i class="fa fa-close"></i> &nbsp; Error While Deleting &nbsp;Telephone Information .
                     </div>
-
+                    {{-- Success --}}
                     <div class="success" style="display: none;">
                         <i class="fa fa-check"></i> &nbsp; Telephone Info Deleted Successfully .
                     </div>
@@ -38,7 +39,7 @@
                     </h4>
                 </div>
                 <div class="modal-body"> Do you want to delete <span class='hidden_title'>" "</span>?</div>
-                <input type="hidden" id="hidden_id">
+                <input type="hidden" id="user_id">
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger green confirm_yes" id="confirm_yes"><i class="icon-check"></i> Yes
                     </button>

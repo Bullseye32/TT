@@ -40,4 +40,8 @@ class User extends Authenticatable
     public function isAdmin(){
         return $this->user_type;
     }
+
+    public function telephone(){
+        return $this->hasOne(Telephone::class,'user_id');
+    }
 }
