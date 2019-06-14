@@ -37,11 +37,20 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function tasks(){
+        return $this->belongsToMany(Task::class);
+    }
+
+    public function whereTask(){
+        return $this->belongsToMany(Task::class)->where('status','!=','3');
+    }
+
     public function isAdmin(){
         return $this->user_type;
     }
 
     public function telephone(){
         return $this->hasOne(Telephone::class,'user_id');
+
     }
 }

@@ -49,3 +49,19 @@ Route::group(['prefix' => 'telephone', 'as'=>'telephone.'], function(){
     // delete
     Route::post('/delete',['uses' => 'TelephoneController@destroy', 'as' => 'delete']);
 });
+
+// Task management
+Route::group(['prefix' => 'task', 'as' => 'task.'], function(){
+    // create new task
+    Route::get('/create', ['uses' => 'TaskController@create', 'as' => 'create'])->middleware(['auth', 'admin']);
+    Route::post('/create', ['uses' => 'TaskController@store', 'as' => 'store'])->middleware(['auth', 'admin']);
+
+    Route::get('/list', ['uses' => 'TaskController@index', 'as' => 'list'])->middleware(['auth']);
+    Route::get('/completed', ['uses' => 'TaskController@completedTask', 'as' => 'completed'])->middleware(['auth']);
+    Route::get('view/{id}',['uses' => 'TaskController@viewTask', 'as' => 'view']);
+
+    Route::get('/edit/{id}', ['uses' => 'TaskController@edit', 'as' => 'edit'])->middleware(['auth','admin']);
+    Route::post('/edit/{id}', ['uses' => 'TaskController@update'])->middleware(['auth','admin']);
+
+    Route::post('/delete', ['uses' => 'TaskController@delete', 'as' => 'delete'])->middleware(['auth']);
+});

@@ -44,8 +44,10 @@
             </div>
     </div>
     <!-- /#wrapper -->
+
     @include('partials._script')
     @yield('script')
+
 </body>
 
 </html>

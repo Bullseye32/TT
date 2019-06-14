@@ -3,6 +3,7 @@
     Staff Listing
 @stop
 @section('css')
+    <link href="{{asset('css/datatable/jquery.dataTables.min.css' )}} " rel="stylesheet">
     {{-- <link href="{{ asset('assets/css/style.css')}}" rel="stylesheet" type="text/css"/> --}}
 @stop
 @section('content')
@@ -11,9 +12,10 @@
             <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="table-responsive">
-                        <table class="table user-list table-hover table-bordered">
+                        <table class="table table-hover table-bordered" id="user_list">
                             <thead>
                                 <tr>
+                                    <th><span>#</span></th>
                                     <th><span>Users</span></th>
                                     <th><span>Username</span></th>
                                     <th><span>User Type</span></th>
@@ -27,6 +29,7 @@
                             @if(isset($staff))
                                 @foreach($staff as $val)
                                     <tr>
+                                        <td>{{ $loop->iteration}} </td>
                                         {{-- prof-image --}}
                                         <td>
                                             @if(!empty($val->profile_image))
@@ -104,11 +107,12 @@
                         {{--<div>
                             <strong>Showing {{ $assigned->firstItem() }} to {{ $assigned->lastitem() }} of {{ $assigned->total() }} entries </strong>
                         </div>--}}
-                        <p>Showing {{$staff->currentPage()}} to {{$staff->perPage()}}  of {{$staff->total()}} entries </p>
 
-                        <div align="center">
+                        {{-- <p>Showing {{$staff->currentPage()}} to {{$staff->perPage()}}  of {{$staff->total()}} entries </p> --}}
+
+                        {{-- <div align="center">
                             {{ $staff->links() }}
-                        </div>
+                        </div> --}}
 
                     </div>
 
@@ -121,7 +125,17 @@
 @endsection
 
 @section('script')
+    {{-- dataTable --}}
+    <script type="text/javascript" src="{{ asset(STATIC_DIR.'js/datatable/jquery.dataTables.min.js') }}"></script>
+
     <script>
+        $(document).ready( function (){
+            $('#user_list').dataTable({
+                "pageLength" : 10,
+                "lengthMenu" : [5, 10,25,50,75,100]
+            });
+        });
+
         $('#deleteStaff').on('shown.bs.modal', function (e) {
             // console.log(e)
             //e.preventDefault();

@@ -2,8 +2,8 @@
 @section('page-title','Telephone Listing')
 
 @section('css')
-    <link href="{{asset('css/bootstrap.min-3.3.7.css' )}} " rel="stylesheet">
-    <link href="{{asset('css/dataTables.bootstrap.min-1.10.19.css' )}} " rel="stylesheet">
+    <link href="{{asset('css/datatable/jquery.dataTables.min.css' )}} " rel="stylesheet">
+    {{-- <link href="{{asset('css/dataTables.bootstrap.min-1.10.19.css' )}} " rel="stylesheet"> --}}
 @stop
 
 @section('content')
@@ -72,13 +72,12 @@
 
 @section('script')
     {{-- data-table --}}
-    <script type="text/javascript" src="{{ asset(STATIC_DIR.'js/jquery-3.3.1.js') }}"></script>
-    <script type="text/javascript" src="{{ asset(STATIC_DIR.'js/jquery.dataTables.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset(STATIC_DIR.'js/dataTables.bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset(STATIC_DIR.'js/datatable/jquery.dataTables.min.js') }}"></script>
+
     <script>
         $(document).ready( function () {
             $('#telephone_table').dataTable( {
-                "pageLength": 50,
+                "pageLength": 10,
                 "lengthMenu": [ 10, 25, 50, 75, 100 ]
             } );
         } );

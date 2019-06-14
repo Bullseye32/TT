@@ -42,17 +42,7 @@ class RegisterController extends Controller
 
         $this -> validator($request->all())->validate();
 
-
-        // $this->validate($request,[
-        //     'full_name' => 'required|string|max:255',
-        //     'user_name' => 'required|string|max:100|unique:users',
-        //     'email' => 'string|email|max:255|unique:users',
-        //     'user_type' => 'required',
-        //     'password' => 'required|string|min:8|confirmed',
-        // ]);
         event(new Registered($user = $this->create($request->all() )));
-
-        // dd($request->all());
 
         // $this->guard()->login($user);
         return redirect()->route('staff.show');
@@ -112,7 +102,7 @@ class RegisterController extends Controller
 
     // staff listing
     public function show(){
-        $staff = User::paginate(10);
+        $staff = User::get();
         return view('pages.staff.showstaff')->with('staff',$staff);
     }
 

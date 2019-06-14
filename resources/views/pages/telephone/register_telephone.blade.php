@@ -21,12 +21,11 @@
                             <label for="" class="control-label" >Name <span style="color: red;">*</span></label>
                             <select class="form-control" name="user_id" id="name">
                                     <option value="" >-- SELECT ONE --</option>
-                                    @if (!empty($staff))
+                                    @if (!empty($user_list))
 
-
-                                        @foreach ($staff as $data)
+                                        @foreach ($user_list as $user)
                                         {{-- {{ (old('department') == 'Software') ? "selected" : '' }} --}}
-                                        <option value="{{ $data->id }}" @if(old('user_id') == $data->id) selected @endif> {{ $data->full_name }}
+                                        <option value="{{ $user->id }}" @if(old('user_id') == $user->id) selected @endif> {{ $user->full_name }}
                                         </option>
                                         @endforeach
 

@@ -35,10 +35,11 @@ class TelephoneController extends Controller
      */
     public function showRegister()
     {
-        $staff = User::all();
-        // dd($staff);
+        $user_list = User::get();
+        $data = Telephone::first(); //to count tele-contacts
+        // dd($data);
 
-        return view('pages.telephone.register_telephone')-> with('staff', $staff);
+        return view('pages.telephone.register_telephone')-> with('user_list', $user_list)->with('data', $data);
     }
 
     /**
