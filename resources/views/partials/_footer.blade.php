@@ -1,3 +1,3 @@
 
 
-<footer class="footer text-center"> 2019 &copy; Ample Admin brought to you by themedesigner.in </footer>
+<footer class="footer text-center"> 2019 &copy; TaskTracker brought to you by TechnologySales</footer>

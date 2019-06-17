@@ -28,18 +28,7 @@
             <hr>
             <strong>Task Description: </strong>{{ $tasks->description }}
             <hr>
-            <strong>Task status:</strong>
-                @if($tasks->status==0)
-                    <span class="label label-primary">New</span>
-                @elseif($tasks->status==1)
-                    <span class="label label-warning">Opened</span>
-                @elseif($tasks->status==2)
-                    <span class="label label-danger">Pending</span>
-                @elseif($tasks->status==3)
-                    <span class="label label-sucdess">Completed</span>
 
-                @endif
-            <hr>
             <strong>Task Priority: </strong>
                 @if($tasks->priority == 1)
                     <span class="label label-default">Normal</span>
@@ -58,22 +47,22 @@
                     @endif
                 <hr>
              @endif
-                @if( !empty($tasks->client_name) || !empty($tasks->client_number) || !empty($tasks->client_latitude) || !empty($tasks->client_longitude))
+                @if( !empty($tasks->clientName) || !empty($tasks->clientNumber) || !empty($tasks->clientLatitude) || !empty($tasks->clientLongitude))
                 <table class="table table-bordered">
                     <tr>
                         <th colspan="4" style="text-align: center;">Client Information</th>
                     </tr>
                     <tr>
-                        @if(!empty($tasks->client_name))<th>Name</th> @endif
-                        @if(!empty($tasks->client_number))<th>Contact Number</th>@endif
-                        @if(!empty($tasks->client_latitude) && !empty($tasks->client_longitude))<th>Map</th>@endif
+                        @if(!empty($tasks->clientName))<th>Name</th> @endif
+                        @if(!empty($tasks->clientNumber))<th>Contact Number</th>@endif
+                        @if(!empty($tasks->clientLatitude) && !empty($tasks->clientLongitude))<th>Map</th>@endif
                     </tr>
                     <tr>
-                        @if(!empty($tasks->client_name)) <td>{{ucfirst($tasks->client_name)}}</td>@endif
-                        @if(!empty($tasks->client_number))<td>{{ $tasks->client_number }}</td>@endif
-                        @if(!empty($tasks->client_latitude) && !empty($tasks->client_longitude))
+                        @if(!empty($tasks->clientName)) <td>{{ucfirst($tasks->clientName)}}</td>@endif
+                        @if(!empty($tasks->clientNumber))<td>{{ $tasks->clientNumber }}</td>@endif
+                        @if(!empty($tasks->clientLatitude) && !empty($tasks->clientLongitude))
                             <td>
-                                <a target="_blank" href="{{'https://www.google.com/maps/place/'.$tasks->client_latitude.','.$tasks->client_longitude}}">
+                                <a target="_blank" href="{{'https://www.google.com/maps/place/'.$tasks->clientLatitude.','.$tasks->clientLongitude}}">
                                     <i class="fa fa-map-marker"></i>
                                     Show in Map
                                 </a>
@@ -98,18 +87,29 @@
             <div class="panel panel-white post panel-shadow" ><br>
 
                 <div class="default-spacer">
+                    <strong>Task status:</strong>
+                        @if($tasks->status==0)
+                            <span class="label label-primary">New</span>
+                        @elseif($tasks->status==1)
+                            <span class="label label-warning">Opened</span>
+                        @elseif($tasks->status==2)
+                            <span class="label label-danger">Pending</span>
+                        @elseif($tasks->status==3)
+                            <span class="label label-success">Completed</span>
 
-                    <h4 class="list-group-item-heading">
-                        Change status
-                        <a href="#"  data-toggle="tooltip" data-placement="bottom" title="Press button below to change the status of current task">
+                        @endif
+                    <hr>
+                    <strong>Change status</strong>
+                        <a data-toggle="tooltip" data-placement="bottom" title="change the status of this task">
                             <i class="fa fa-question-circle"></i>
                         </a>
-                    </h4>
-
+                        {{-- open task //also status is increased by 1 than previous status --}}
                     <button type="button" class="btn btn-link  btn-sm" data-toggle="modal" data-target="#statusModal" data-task_id={{$tasks->id}} data-task_status=1 @if( $tasks->status !=0) disabled  @endif>Open</button>
+                        {{-- Append task --}}
                     <button type="button"  class="btn btn-link btn-sm" data-toggle="modal" data-target="#statusModal" data-task_id={{$tasks->id}} data-task_status=2 @if($tasks->status !=1) disabled  @endif>Append</button>
+                        {{-- mark completed --}}
                     <button type="button"  class="btn btn-link btn-sm" data-toggle="modal" data-target="#statusModal" data-task_id={{$tasks->id}} data-task_status=3 @if($tasks->status !=2) disabled  @endif>Mark as Completed</button>
-                    <br>
+                    <hr>
                 </div>
             </div>
         </div>
@@ -127,19 +127,24 @@
                         <table class="table table-bordered table-hover table-striped">
                             <thead>
                             <tr>
+                                <th>#</th>
                                 <th>Task</th>
                                 <th>Remarks</th>
+
                                 <th>Status</th>
                                 <th>File</th>
                             </tr>
                             </thead>
                             <tbody>
 
-                            {{-- @foreach($remarks as $data)
+                            @foreach($remarks as $data)
                                 <tr>
-                                    <td>{{ ucfirst($tasks->name )}}</td>
+                                    <td>{{$loop->iteration }} </td>
+                                    <td>{{ ucfirst($tasks->taskName )}}</td>
                                     @if(($data->remarks))
-                                        <td>{{ ucfirst($data->remarks) }}</td>
+                                        <td>{{ ucfirst($data->remarks) }}<br>Remarked By @
+
+                                            <a href="">{{ $data->remarkedBy->user_name}}</a> </td>
                                     @else
                                         <td>No Remarks Added</td>
                                     @endif
@@ -169,7 +174,7 @@
                                     </td>
 
                                 </tr>
-                            @endforeach --}}
+                            @endforeach
                             </tbody>
                         </table>
 
@@ -188,12 +193,12 @@
                 <div class="widget-area no-padding blank">
                     <div class="status-upload">
 
-                        {{-- <form action="{{ route('comment',$tasks->id) }}" method="post"> --}}
+                        <form action="{{ route('comment',$tasks->id) }}" method="post">
                             {{ csrf_field() }}
                             <textarea placeholder="Write a comment for this task?" name="comment" ></textarea>
-                            {{--<ul>
+                            <ul>
                                 <li><a title="" data-toggle="modal" data-target="#myModal3" data-placement="bottom" data-original-title="Audio"><i class="fa fa-upload"></i></a></li>
-                            </ul>--}}
+                            </ul>
                             <button type="submit" class="btn btn-success green"><i class="fa fa-share"></i> Comment</button>
                         </form>
                     </div><!-- Status Upload  -->
@@ -201,7 +206,7 @@
             </div>
         </div>
     </div>
-    {{--<div id="myModal3" class="modal fade" role="dialog">
+    <div id="myModal3" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
@@ -214,13 +219,13 @@
                 </div>
             </div>
         </div>
-    </div>--}}
+    </div>
 
-    <div class="row">
-        {{-- @foreach ($tasks->comments->sortByDesc('created_at') as $comment) --}}
+    {{-- <div class="row">
+        @foreach ($tasks->comments->sortByDesc('created_at') as $comment)
             <div class="col-sm-12">
                 <div class="panel panel-white post panel-shadow" >
-                    {{-- <div class="post-heading">
+                    <div class="post-heading">
                         <div class="pull-left image">
                             @if (!empty($comment->user->profile_image))
                                 <img src="{{ asset('/public/storage/'.$comment->user->profile_image) }}" class="img-circle avatar" alt="user profile image">
@@ -247,40 +252,40 @@
                                     Delete
                                 </a>
                             </div>
-                        @endif --}}
+                        @endif
                     </div>
 
 
                 </div>
             </div>
-        {{-- @endforeach --}}
-    </div>
+        @endforeach
+    </div> --}}
     @include('pages.task.modal_status')
 
 @endsection
 
-            @section('script')
-                <script type="text/javascript">
+@section('script')
+    <script type="text/javascript">
 
-                    $('#statusModal').on('show.bs.modal', function (event) {
-                        let button = $(event.relatedTarget) // Button that triggered the modal
-                        let task_status = button.data('task_status')
-                        let task_id = button.data('task_id')
+        $('#statusModal').on('show.bs.modal', function (event) {
+            let button = $(event.relatedTarget) // Button that triggered the modal
+            let task_status = button.data('task_status')
+            let task_id = button.data('task_id')
 
-                        let modal = $(this)
-                        modal.find('.modal-body #task_status').val(task_status)
-                        modal.find('.modal-body #task_id').val(task_id)
+            let modal = $(this)
+            modal.find('.modal-body #task_status').val(task_status)
+            modal.find('.modal-body #task_id').val(task_id)
 
-                        //    if status is 3 let user to upload file too.
-                        if(task_status == 3){
-                            modal.find('.modal-body #file_upload').show()
-                        }
-                        else{
-                            modal.find('.modal-body #file_upload').hide()
+            //    if status is 3 let user to upload file too.
+            if(task_status == 3){
+                modal.find('.modal-body #file_upload').show()
+            }
+            else{
+                modal.find('.modal-body #file_upload').hide()
 
-                        }
-                    })
+            }
+        })
 
 
-                </script>
+    </script>
 @endsection

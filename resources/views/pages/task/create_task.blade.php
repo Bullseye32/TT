@@ -161,7 +161,7 @@
 				<div class="white-box">
 					<div class="row">
 						<div class="col-md-12">
-							<div class="form-actions">
+							<div class="form-actions text-center">
 								<button type="reset" class="btn btn-danger">Clear</button>
 								<button type="submit" class="btn btn-success">Submit</button>
 							</div>

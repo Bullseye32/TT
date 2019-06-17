@@ -156,9 +156,9 @@
                         </div>
                     </div>
 
-                    <div class="form-actions">
-                        <a href="{{ URL::previous() }}" type="button" class="btn default">Cancel</a>
-                        <button type="submit" class="btn green">Update</button>
+                    <div class="form-actions text-center">
+                        <a href="{{ URL::previous() }}" type="button" class="btn btn-warning">Cancel</a>
+                        <button type="submit" class="btn btn-success">Update</button>
                     </div>
                 </form>
             </div>

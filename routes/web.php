@@ -60,8 +60,27 @@ Route::group(['prefix' => 'task', 'as' => 'task.'], function(){
     Route::get('/completed', ['uses' => 'TaskController@completedTask', 'as' => 'completed'])->middleware(['auth']);
     Route::get('view/{id}',['uses' => 'TaskController@viewTask', 'as' => 'view']);
 
+    Route::get('/assign',['uses' => 'TaskController@getAssign', 'as' => 'assign'])->middleware(['auth','admin']);
+    Route::post('/assign',['uses' => 'TaskController@assign', 'as' => 'assign'])->middleware(['auth','admin']);
+    // sends assigned user through ajax
+    Route::get('/assign/id', ['uses' => 'TaskController@getAssignedUserByTaskId','as' => 'getAssignedUserByTaskId'])->middleware(['auth','admin']);
+
+
+
     Route::get('/edit/{id}', ['uses' => 'TaskController@edit', 'as' => 'edit'])->middleware(['auth','admin']);
     Route::post('/edit/{id}', ['uses' => 'TaskController@update'])->middleware(['auth','admin']);
 
+    // add-Remarks for a Task
+    Route::post('/remarks/store', ['uses' => 'TaskController@addRemarks', 'as' => 'store_remarks'])->middleware(['auth']);
+    Route::get('/status/{id}', ['uses' => 'TaskController@status', 'as' => 'status']); //?? not used
+
     Route::post('/delete', ['uses' => 'TaskController@delete', 'as' => 'delete'])->middleware(['auth']);
 });
+
+// Comment
+Route::post('/comment/{taskId}', ['uses' => 'CommentController@store','as' => 'comment']);
+
+Route::get('/comment/update/{id}', ['uses' => 'CommentController@edit','as' => 'comment.update']);
+Route::post('/comment/update/{id}', ['uses' => 'CommentController@update','as' => 'comment.update']);
+
+Route::get('/comment/delete/{id}', ['uses' => 'CommentController@delete','as' => 'comment.delete']);

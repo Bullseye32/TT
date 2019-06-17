@@ -23,6 +23,6 @@ class Task extends Model
     {
         return $this->belongsTo('App\User','createdBy');
         // 1 task -> 1 creator user
-        // that user is set at 'users' table 'createdBy' column
+        // that user is set at 'tasks' table 'createdBy' column
     }
 }

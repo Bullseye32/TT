@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use Session;
 use App\Task;
 use App\User;
+use App\TaskRemark;
 use App\Helper\Tools;
 use Illuminate\Http\Request;
+use Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\URL;
 
 class TaskController extends Controller
 {
@@ -139,8 +142,51 @@ class TaskController extends Controller
     {
         $tasks = Task::find($id);
         $assigned = Task::find($id)->users;
-        // dd($assigned);
-        return view('pages.task.view')->with('tasks', $tasks)->with('assigned', $assigned);
+        $remarks = TaskRemark::where('task_id', $id)->with('remarkedBy')->get();
+        // dd($remarks);
+        return view('pages.task.view')->with('tasks', $tasks)->with('assigned', $assigned)->with('remarks', $remarks);
+    }
+
+    public function getAssign(){
+        // for listing all staff/employee
+        $staff = User::all();
+        // gives 'task-list' with 'related-users'
+        // with('users')-> no need since it is fetched using ajax
+        $task = Task::get();
+        // dd($task);
+        return view('pages.task.assign')->with('staff',$staff)->with('task', $task);
+    }
+
+    public function assign(Request $request){
+        // dd($request->request);
+        $this -> validate($request, [
+            'task' => 'required',
+        ]);
+
+        $task= Task::find($request->task);
+
+        // detaches staffs only if new staffs is assigned
+        if(isset($request->staff)){
+            $task->users()->detach();
+        }
+        // 'assigned-user-id' updated/synchronized for a 'Task' in pivot-table
+        $task->users()->sync($request->staff, false);
+        // dd($task->users()->sync($request->staff, false));
+
+        Session::flash('success','Task has been assigned successfully');
+        return redirect()->route('task.assign');
+    }
+
+    public function getAssignedUserByTaskId(){
+        // id can also be fetched using Request
+        if(isset($_GET['id'])){
+            $task = Task::where('id',$_GET['id'])->with('users')->first();
+            $response_data = Tools::setResponse('success','Fetching users data successfull@mukes',$task,'');
+        }
+        else{
+            $response_data = Tools::setResponse('error','Error while Fetching users data','','');
+        }
+        return ($response_data);
     }
 
     /**
@@ -237,5 +283,43 @@ class TaskController extends Controller
 
         $responseData = Tools::setResponse('success','User Deleted Successfully','','');
         return response($responseData,200);
+    }
+
+    public function addRemarks(Request $request)
+    {
+        $this -> validate($request, [
+            'remarks' => 'max:100',
+        ]);
+        $remarks = new TaskRemark();
+        $remarks->task_id = $request->task_id;
+        $remarks->remarks = $request->remarks;
+        $remarks->status = $request->task_status;
+        $remarks->user_id = Auth::User()->id;
+        // dd($remarks);
+        $remarks->save();
+
+        $task = Task::find($request->task_id);
+
+        //upload in server folder.
+        if(isset($request->file_upload)){
+            $upload = $request->file('file_upload')->store('files/'.$request->task_id.'/completed_task', 'public');
+            $task->file = $upload;
+        }
+        // Alter Tasks.status
+        $task->status = $request->task_status;
+        $task->save();
+
+        return redirect()->back();
+    }
+
+    // What is this doing ??? i think unused
+    public function status(Request $request, $id)
+    {
+        $status = Task::find($id);
+        $status->status=$request->input('status');
+
+        $status->save();
+        Session::flash('success', 'Task status has been changed');
+        return redirect()->back();
     }
 }

@@ -53,30 +53,33 @@
                 </li>
                 {{-- task management --}}
                 <li>
-                    <a href="javascript:void(0)" class="waves-effect">
+                    <a href="javascript:void(0)" class="waves-effect @if(Request::is('task/*')) active @endif ">
                         <i class="glyphicon glyphicon-tasks fa-fw"></i>
                         <span class="hide-menu">Task Management<span class="fa arrow fa-fw"></span></span>
                     </a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="{{ route('task.create')}} ">
+                            <a href="{{ route('task.create')}} " class="@if(Request::is('task/create')) active @endif " >
                                 <i data-icon="/" class="glyphicon glyphicon-pencil fa-fw"></i>
                                 <span class="hide-menu">Create new task</span>
                             </a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)">
+                            <a href="{{ route('task.assign') }} " class="@if(Request::is('task/assign')) active @endif ">
                                 <i data-icon="7" class="glyphicon glyphicon-share fa-fw"></i>
                                 <span class="hide-menu">Assign Task</span>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('task.list')}} " class="waves-effect">
+                            <a href="{{ route('task.list')}} " class="waves-effect @if(Request::is('task/list')) active @endif">
                                 <i data-icon="&#xe008;" class="glyphicon glyphicon-eye-open fa-fw"></i>
                                 <span class="hide-menu">View all task</span>
                             </a>
                         </li>
-                        <li> <a href="{{ route('task.completed') }} "><i data-icon="7" class="glyphicon glyphicon-check fa-fw"></i><span class="hide-menu">Completed Task</span></a> </li>
+                        <li> <a href="{{ route('task.completed') }} " class="@if(Request::is('task/completed')) active @endif">
+                            <i data-icon="7" class="glyphicon glyphicon-check fa-fw"></i>
+                            <span class="hide-menu">Completed Task</span></a>
+                        </li>
                     </ul>
                 </li>
                 {{-- telephone directory --}}
@@ -100,6 +103,7 @@
                             <a href="{{ route('telephone.list') }} " class="@if(Request::is('telephone/list')) active @endif">
                                 <i class="glyphicon glyphicon-earphone fa-fw"></i>
                                 <span>Telephone List</span>
+                                {{-- counting total telephones --}}
                                 @if(@isset($data))
                                     <span class="label label-rounded label-red pull-right">
                                         {{ $data->count() }}
